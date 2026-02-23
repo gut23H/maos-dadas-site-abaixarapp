@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Apoiar o Projeto</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  background:linear-gradient(135deg,#FFD200,#F39C12);
+  font-family:'Segoe UI',Arial,sans-serif;
+  margin:0;
+}
+
+.container{
+  max-width:420px;
+  margin:20px auto;
+  background:white;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,.35);
+  animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.topo{
+  padding:20px;
+  text-align:center;
+  background:linear-gradient(135deg,#FFD200,#F39C12);
+  color:#7A4B00;
+}
+
+.topo h1{
+  margin:0;
+}
+
+.alerta{
+  background:#fff3cd;
+  color:#7a5a00;
+  padding:12px;
+  text-align:center;
+  font-size:14px;
+  border-bottom:2px dashed #f0c000;
+}
+
+img{
+  width:100%;
+  display:block;
+}
+
+.conteudo{
+  padding:20px;
+  text-align:center;
+}
+
+.btn-download{
+  display:block;
+  background:linear-gradient(135deg,#F39C12,#E67E22);
+  color:white;
+  padding:15px;
+  border-radius:15px;
+  text-decoration:none;
+  font-weight:bold;
+  margin:15px 0;
+  box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+.box-ajuda{
+  background:#FFF7D6;
+  padding:18px;
+  border-radius:18px;
+  border:2px dashed #F39C12;
+  margin-top:15px;
+}
+
+.motivo{
+  background:#FFE082;
+  padding:12px;
+  border-radius:12px;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-top:10px;
+  font-size:15px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:none;
+  border-radius:15px;
+  background:linear-gradient(135deg,#FFD200,#F39C12);
+  font-weight:bold;
+  cursor:pointer;
+  font-size:16px;
+}
+
+button:hover{
+  opacity:0.9;
+}
+
+#qrcode{
+  margin-top:15px;
+}
+
+#codigoPix{
+  background:#eee;
+  padding:10px;
+  margin-top:10px;
+  word-break:break-all;
+  font-size:12px;
+  border-radius:10px;
+}
+
+#msg{
+  color:green;
+  font-weight:bold;
+  margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="topo">
+    <h1>🤝 Juntos Podemos Ajudar</h1>
+    <p>Solidariedade transforma vidas</p>
+  </div>
+
+  <div class="alerta">
+  ⚠️ <b>Aviso importante sobre o download do app:</b><br><br>
+  Ao baixar o aplicativo, o celular pode mostrar um aviso dizendo que o app é “nocivo” ou “não seguro”.  
+  <br><br>
+  Isso acontece porque o aplicativo ainda não está publicado na Play Store, e sim distribuído diretamente pelo site.
+  <br><br>
+  ✅ O app é do mesmo projeto deste site.<br>
+  ✅ Ele não contém vírus.<br>
+  ✅ Esse aviso é apenas uma proteção padrão do Android.
+</div>
+
+  <!-- IMAGEM SOCIAL -->
+  <img src="logobanner.png" alt="Pessoas em situação de dificuldade no Brasil">
+
+  <div class="conteudo">
+
+    <a href="app.apk" class="btn-download">⬇️ Baixar App Oficial</a>
+
+    <div class="box-ajuda">
+
+      <div class="motivo">
+        💛 <b>Motivo do projeto:</b><br>
+        Este projeto foi criado para ajudar pessoas em situação de vulnerabilidade,
+        divulgar informações importantes e manter um canal de apoio ativo para quem mais precisa.
+      </div>
+
+      <p><b>Sua contribuição é voluntária.</b></p>
+      <p>Ela ajuda a manter o site e o aplicativo funcionando e permite que mais pessoas sejam alcançadas.</p>
+
+      <input type="number" id="valor" placeholder="Digite um valor (ex: 10.00)">
+
+      <button onclick="gerarPix()">Gerar Pix de Apoio</button>
+
+      <div id="areaPix" style="display:none;">
+        <div id="qrcode"></div>
+        <p>Código Pix:</p>
+        <div id="codigoPix"></div>
+        <button onclick="copiar()">📋 Copiar Código</button>
+        <div id="msg"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const chavePix = "gustavopaulo2283@gmail.com";
+const nome = "Apoio Projeto Social";
+const cidade = "Guaraciaba";
+
+function gerarPix(){
+  let valor = document.getElementById("valor").value;
+  if(!valor){
+    alert("Digite um valor");
+    return;
+  }
+
+  valor = parseFloat(valor).toFixed(2);
+
+  const payload =
+`00020126360014BR.GOV.BCB.PIX01${chavePix.length.toString().padStart(2,'0')}${chavePix}52040000530398654${valor.length.toString().padStart(2,'0')}${valor}5802BR59${nome.length.toString().padStart(2,'0')}${nome}60${cidade.length.toString().padStart(2,'0')}${cidade}6304`;
+
+  const pix = payload + crc16(payload);
+
+  document.getElementById("areaPix").style.display="block";
+  document.getElementById("codigoPix").innerText = pix;
+  document.getElementById("qrcode").innerHTML="";
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: pix,
+    width:180,
+    height:180
+  });
+}
+
+function copiar(){
+  navigator.clipboard.writeText(document.getElementById("codigoPix").innerText);
+  document.getElementById("msg").innerText="Código copiado!";
+}
+
+function crc16(str){
+  let crc=0xFFFF;
+  for(let c=0;c<str.length;c++){
+    crc^=str.charCodeAt(c)<<8;
+    for(let i=0;i<8;i++){
+      crc=(crc&0x8000)?(crc<<1)^0x1021:crc<<1;
+    }
+  }
+  return (crc&0xFFFF).toString(16).toUpperCase().padStart(4,'0');
+}
+</script>
+
+</body>
+</html>
