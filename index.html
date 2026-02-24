@@ -34,10 +34,6 @@ body{
   color:#7A4B00;
 }
 
-.topo h1{
-  margin:0;
-}
-
 .alerta{
   background:#fff3cd;
   color:#7a5a00;
@@ -47,15 +43,9 @@ body{
   border-bottom:2px dashed #f0c000;
 }
 
-img{
-  width:100%;
-  display:block;
-}
+img{width:100%;display:block;}
 
-.conteudo{
-  padding:20px;
-  text-align:center;
-}
+.conteudo{padding:20px;text-align:center;}
 
 .btn-download{
   display:block;
@@ -66,7 +56,6 @@ img{
   text-decoration:none;
   font-weight:bold;
   margin:15px 0;
-  box-shadow:0 4px 10px rgba(0,0,0,.2);
 }
 
 .box-ajuda{
@@ -74,7 +63,6 @@ img{
   padding:18px;
   border-radius:18px;
   border:2px dashed #F39C12;
-  margin-top:15px;
 }
 
 .motivo{
@@ -103,17 +91,9 @@ button{
   background:linear-gradient(135deg,#FFD200,#F39C12);
   font-weight:bold;
   cursor:pointer;
-  font-size:16px;
 }
 
-button:hover{
-  opacity:0.9;
-}
-
-#qrcode{
-  margin-top:15px;
-}
-
+#qrcode{margin-top:15px;}
 #codigoPix{
   background:#eee;
   padding:10px;
@@ -122,12 +102,7 @@ button:hover{
   font-size:12px;
   border-radius:10px;
 }
-
-#msg{
-  color:green;
-  font-weight:bold;
-  margin-top:5px;
-}
+#msg{color:green;font-weight:bold;margin-top:5px;}
 </style>
 </head>
 
@@ -135,73 +110,78 @@ button:hover{
 
 <div class="container">
 
-  <div class="topo">
-    <h1>🤝 Juntos Podemos Ajudar</h1>
-    <p>Solidariedade transforma vidas</p>
-  </div>
-
-  <div class="alerta">
-  ⚠️ <b>Aviso importante sobre o download do app:</b><br><br>
-  Ao baixar o aplicativo, o celular pode mostrar um aviso dizendo que o app é “nocivo” ou “não seguro”.  
-  <br><br>
-  Isso acontece porque o aplicativo ainda não está publicado na Play Store, e sim distribuído diretamente pelo site.
-  <br><br>
-  ✅ O app é do mesmo projeto deste site.<br>
-  ✅ Ele não contém vírus.<br>
-  ✅ Esse aviso é apenas uma proteção padrão do Android.
+<div class="topo">
+<h1>🤝 Juntos Podemos Ajudar</h1>
+<p>Solidariedade transforma vidas</p>
 </div>
 
-  <!-- IMAGEM SOCIAL -->
-  <img src="logobanner.png" alt="Pessoas em situação de dificuldade no Brasil">
+<div class="alerta">
+⚠️ Ao baixar o app pode aparecer aviso de app não seguro.<br>
+Isso ocorre porque não está na Play Store.
+</div>
 
-  <div class="conteudo">
+<img src="logobanner.png">
 
-    <a href="app.apk" class="btn-download">⬇️ Baixar App Oficial</a>
+<div class="conteudo">
 
-    <div class="box-ajuda">
+<a href="app.apk" class="btn-download">⬇️ Baixar App Oficial</a>
 
-      <div class="motivo">
-        💛 <b>Motivo do projeto:</b><br>
-        Este projeto foi criado para ajudar pessoas em situação de vulnerabilidade,
-        divulgar informações importantes e manter um canal de apoio ativo para quem mais precisa.
-      </div>
+<div class="box-ajuda">
 
-      <p><b>Sua contribuição é voluntária.</b></p>
-      <p>Ela ajuda a manter o site e o aplicativo funcionando e permite que mais pessoas sejam alcançadas.</p>
+<div class="motivo">
+💛 Este projeto ajuda pessoas em situação de vulnerabilidade.
+</div>
 
-      <input type="number" id="valor" placeholder="Digite um valor (ex: 10.00)">
+<p><b>Sua contribuição é voluntária.</b></p>
 
-      <button onclick="gerarPix()">Gerar Pix de Apoio</button>
+<input type="text" id="valor" placeholder="Ex: 10,50 ou 5.00" inputmode="decimal">
 
-      <div id="areaPix" style="display:none;">
-        <div id="qrcode"></div>
-        <p>Código Pix:</p>
-        <div id="codigoPix"></div>
-        <button onclick="copiar()">📋 Copiar Código</button>
-        <div id="msg"></div>
-      </div>
-    </div>
+<button onclick="gerarPix()">Gerar Pix</button>
 
-  </div>
+<div id="areaPix" style="display:none;">
+<div id="qrcode"></div>
+<p>Código Pix:</p>
+<div id="codigoPix"></div>
+<button onclick="copiar()">📋 Copiar Código</button>
+<div id="msg"></div>
+</div>
+
+</div>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-const chavePix = "gustavopaulo2283@gmail.com";
-const nome = "Apoio Projeto Social";
-const cidade = "Guaraciaba";
+const chavePix = "eb9978d2-f66f-4baf-823c-ccb16c2189a8";
+const nome = "APOIOPROJETO";
+const cidade = "GUARACIABA";
+const txid = "APOIO01";
 
 function gerarPix(){
-  let valor = document.getElementById("valor").value;
-  if(!valor){
-    alert("Digite um valor");
-    return;
-  }
+  let valor = document.getElementById("valor").value.trim();
+  if(!valor){ alert("Digite um valor"); return; }
 
+  valor = valor.replace(",", ".");
+  if(isNaN(valor)){ alert("Valor inválido"); return; }
   valor = parseFloat(valor).toFixed(2);
 
+  function format(id, value){
+    return id + value.length.toString().padStart(2,'0') + value;
+  }
+
+  const merchantAccount = "0014BR.GOV.BCB.PIX" + format("01", chavePix);
+
   const payload =
-`00020126360014BR.GOV.BCB.PIX01${chavePix.length.toString().padStart(2,'0')}${chavePix}52040000530398654${valor.length.toString().padStart(2,'0')}${valor}5802BR59${nome.length.toString().padStart(2,'0')}${nome}60${cidade.length.toString().padStart(2,'0')}${cidade}6304`;
+    "000201010212" +
+    format("26", merchantAccount) +
+    "52040000" +
+    "5303986" +
+    format("54", valor) +
+    "5802BR" +
+    format("59", nome) +
+    format("60", cidade) +
+    format("62", format("05", txid)) +
+    "6304";
 
   const pix = payload + crc16(payload);
 
@@ -209,11 +189,7 @@ function gerarPix(){
   document.getElementById("codigoPix").innerText = pix;
   document.getElementById("qrcode").innerHTML="";
 
-  new QRCode(document.getElementById("qrcode"), {
-    text: pix,
-    width:180,
-    height:180
-  });
+  new QRCode(document.getElementById("qrcode"), { text: pix, width:180, height:180 });
 }
 
 function copiar(){
@@ -224,9 +200,9 @@ function copiar(){
 function crc16(str){
   let crc=0xFFFF;
   for(let c=0;c<str.length;c++){
-    crc^=str.charCodeAt(c)<<8;
+    crc ^= str.charCodeAt(c)<<8;
     for(let i=0;i<8;i++){
-      crc=(crc&0x8000)?(crc<<1)^0x1021:crc<<1;
+      crc = (crc&0x8000)?(crc<<1)^0x1021:crc<<1;
     }
   }
   return (crc&0xFFFF).toString(16).toUpperCase().padStart(4,'0');
